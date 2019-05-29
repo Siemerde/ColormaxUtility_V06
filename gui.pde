@@ -356,15 +356,15 @@ public void createGUI(){
   lblSensorSettings.setText("Sensor Settings");
   lblSensorSettings.setTextBold();
   lblSensorSettings.setOpaque(false);
-  listAveraging = new GDropList(this, 360, 60, 90, 160, 7);
-  listAveraging.setItems(loadStrings("list_447613"), 0);
+  listAveraging = new GDropList(this, 360, 60, 90, 200, 9);
+  listAveraging.setItems(loadStrings("list_447613"), 8);
   listAveraging.addEventHandler(this, "listAveraging_click1");
   lblAveragingList = new GLabel(this, 260, 60, 100, 20);
   lblAveragingList.setTextAlign(GAlign.RIGHT, GAlign.MIDDLE);
   lblAveragingList.setText("Averaging:");
   lblAveragingList.setTextBold();
   lblAveragingList.setOpaque(false);
-  listTriggering = new GDropList(this, 360, 90, 90, 80, 3);
+  listTriggering = new GDropList(this, 360, 120, 90, 80, 3);
   listTriggering.setItems(loadStrings("list_867079"), 0);
   listTriggering.addEventHandler(this, "listTriggering_click1");
   label1 = new GLabel(this, 260, 120, 100, 20);
@@ -372,7 +372,7 @@ public void createGUI(){
   label1.setText("Triggering:");
   label1.setTextBold();
   label1.setOpaque(false);
-  listOutputDuration = new GDropList(this, 360, 120, 90, 220, 10);
+  listOutputDuration = new GDropList(this, 360, 90, 90, 220, 10);
   listOutputDuration.setItems(loadStrings("list_833188"), 0);
   listOutputDuration.addEventHandler(this, "listOutputDuration_click1");
   lblOutputDurationList = new GLabel(this, 260, 90, 100, 20);
@@ -386,7 +386,7 @@ public void createGUI(){
   lblIlluminationSetting.setOpaque(false);
   sldrIllumination = new GSlider(this, 260, 170, 190, 40, 10.0);
   sldrIllumination.setShowValue(true);
-  sldrIllumination.setLimits(50, 0, 100);
+  sldrIllumination.setLimits(100, 0, 100);
   sldrIllumination.setNbrTicks(101);
   sldrIllumination.setNumberFormat(G4P.INTEGER, 0);
   sldrIllumination.setOpaque(false);
