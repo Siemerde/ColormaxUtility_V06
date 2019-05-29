@@ -212,6 +212,14 @@ public void btnCancel_click1(GButton source, GEvent event) { //_CODE_:btnCancel:
   cancelAlignRetake(colormaxes[listColormaxSelect.getSelectedIndex()]);
 } //_CODE_:btnCancel:511767:
 
+public void btnGetColorTable_click1(GButton source, GEvent event) { //_CODE_:btnGetColorTable:237531:
+  println("btnGetColorTable - GButton >> GEvent." + event + " @ " + millis());
+} //_CODE_:btnGetColorTable:237531:
+
+public void btnGetTempTable_click1(GButton source, GEvent event) { //_CODE_:btnGetTempTable:816415:
+  println("btnGetTempTable - GButton >> GEvent." + event + " @ " + millis());
+} //_CODE_:btnGetTempTable:816415:
+
 
 
 // Create all the GUI controls. 
@@ -478,7 +486,7 @@ public void createGUI(){
   btnCalibrateColor.setText("Read Color");
   btnCalibrateColor.setTextBold();
   btnCalibrateColor.addEventHandler(this, "btnCalibrateColor_click1");
-  btnCalibrateLight = new GButton(this, 460, 380, 100, 20);
+  btnCalibrateLight = new GButton(this, 460, 370, 100, 20);
   btnCalibrateLight.setText("Adjust Light");
   btnCalibrateLight.setTextBold();
   btnCalibrateLight.setLocalColorScheme(GCScheme.RED_SCHEME);
@@ -504,7 +512,7 @@ public void createGUI(){
   btnStoreAlign.setText("Store Align");
   btnStoreAlign.setTextBold();
   btnStoreAlign.addEventHandler(this, "btnStoreAlign_click1");
-  btnDiscardAlign = new GButton(this, 570, 380, 100, 20);
+  btnDiscardAlign = new GButton(this, 570, 370, 100, 20);
   btnDiscardAlign.setText("Discard Align");
   btnDiscardAlign.setTextBold();
   btnDiscardAlign.setLocalColorScheme(GCScheme.RED_SCHEME);
@@ -517,11 +525,11 @@ public void createGUI(){
   btnAlignOff.setText("Align Off");
   btnAlignOff.setTextBold();
   btnAlignOff.addEventHandler(this, "btnAlignOff_click1");
-  btnTempOn = new GButton(this, 460, 410, 100, 20);
+  btnTempOn = new GButton(this, 460, 420, 100, 20);
   btnTempOn.setText("Temp On");
   btnTempOn.setTextBold();
   btnTempOn.addEventHandler(this, "btnTempOn_click1");
-  btnTempOff = new GButton(this, 570, 410, 100, 20);
+  btnTempOff = new GButton(this, 570, 420, 100, 20);
   btnTempOff.setText("Temp Off");
   btnTempOff.setTextBold();
   btnTempOff.addEventHandler(this, "btnTempOff_click1");
@@ -560,7 +568,7 @@ public void createGUI(){
   chkSpacebarShortcut.setTextBold();
   chkSpacebarShortcut.setOpaque(false);
   chkSpacebarShortcut.addEventHandler(this, "chkSpacebarShortcut_clicked1");
-  btnCalcCoefficient = new GButton(this, 460, 320, 100, 20);
+  btnCalcCoefficient = new GButton(this, 570, 320, 100, 20);
   btnCalcCoefficient.setText("Calculate Coeff");
   btnCalcCoefficient.setTextBold();
   btnCalcCoefficient.addEventHandler(this, "btnCalcCoefficient_click1");
@@ -583,6 +591,14 @@ public void createGUI(){
   btnCancel.setTextBold();
   btnCancel.setLocalColorScheme(GCScheme.YELLOW_SCHEME);
   btnCancel.addEventHandler(this, "btnCancel_click1");
+  btnGetColorTable = new GButton(this, 460, 320, 100, 20);
+  btnGetColorTable.setText("Get Color Table");
+  btnGetColorTable.setTextBold();
+  btnGetColorTable.addEventHandler(this, "btnGetColorTable_click1");
+  btnGetTempTable = new GButton(this, 460, 450, 100, 20);
+  btnGetTempTable.setText("Get Temp Table");
+  btnGetTempTable.setTextBold();
+  btnGetTempTable.addEventHandler(this, "btnGetTempTable_click1");
 }
 
 // Variable declarations 
@@ -669,3 +685,5 @@ GButton btnSendTargets;
 GCheckbox chkBeepOnRead; 
 GButton btnRetakePoint; 
 GButton btnCancel; 
+GButton btnGetColorTable; 
+GButton btnGetTempTable; 
