@@ -42,6 +42,8 @@ class Colormax
   private String identity;          // stores raw colormax response
   private String model;
   private String serialNumber;
+  private String UDID;
+  private String UDIDcd;
     
   private String settings;          // stores raw colormax response
   private String averaging;
@@ -446,7 +448,7 @@ class Colormax
   
   // Current Data ****************************************
   // !d command
-  void parseCurrentData(String inCurrentData){
+  void parseData(String inCurrentData){
     currentData = inCurrentData;
     red = Integer.parseInt(inCurrentData.substring(3, 7), 16);
     green = Integer.parseInt(inCurrentData.substring(8, 12), 16);
@@ -1185,5 +1187,87 @@ class Colormax
     serial.write(13);
   }
   
+  void readUDID(){
+    serial.write("!D");
+    serial.write(13);
+  }
+  
+  void readIlluminationAlgorithm(){
+    serial.write("!g");
+    serial.write(13);
+  }
+  
+  void parseIlluminationAlgorithm(String inIlluminationAlgorithm){
+    ledMa = inIlluminationAlgorithm.substring(3, 7);
+    ledMaFloat = (float) Integer.parseInt(ledMa, 16) / 64 / 1023 * 5 / 0.08; // for some reason this is how we convert to mA
+    ledDac = inIlluminationAlgorithm.substring(8, 12);
+    ledStability = inIlluminationAlgorithm.substring(13,14);
+  }
+  
+  void readPhase(){
+    serial.write("!l");
+    serial.write(13);
+  }
+  
+  void writePhase(String inPhase){
+    serial.write("!L,");
+    serial.write(inPhase);
+    serial.write(13);
+  }
+  
+  void readEepromFailures(){
+    serial.write("!q,");
+    serial.write(UDIDcd);
+    serial.write(13);
+  }
+  
+  void writeClearEepromFailures(){
+    serial.write("!Q,");
+    serial.write(UDIDcd);
+    serial.write(13);
+  }
+  
+  void parseUDID(String inUDID){
+    UDID = inUDID.substring(3,33);
+  }
+  
+  String getUDID(){
+    return UDID;
+  }
+  
+  void setUDID(String inUDID){
+    UDID = inUDID;
+  }
+  
+  String getUDIDcd(){
+    return UDIDcd;
+  }
+  
+  void setUDIDcd(String inUDIDcd){
+    UDIDcd = inUDIDcd;
+  }
+  
+  void writeDeleteSerialNumber(String inSerialNumberCode){
+    serial.write("!Z,");
+    serial.write(inSerialNumberCode);
+    serial.write(13);
+  }
+  
+  void writeSerialNumber(String inSerialNumber){
+    serial.write("!I,");
+    serial.write(inSerialNumber);
+    serial.write(13);
+    
+    
+  }
+
+  void readTemperature(){
+    serial.write("!w\r");
+  }
+
+  void parseTemperature(String inTemperature){
+    short tempTemp = (short) Integer.parseInt(inTemperature.substring(3,7), 16);  // Convert raw input into a 16-bit signed integer
+    temperature = (float) tempTemp / 16;                                          // Convert to floating point ºC
+  }
 // @@@@@ End of Object @@@@@  
 }

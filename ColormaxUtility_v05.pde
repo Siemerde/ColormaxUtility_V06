@@ -520,7 +520,7 @@ volatile int point;
 volatile Colormax currentColormax;
 void getAlignTable(Colormax inColormax) {
   inColormax.setStatus("gettingAlignTable");
-  String logName = inColormax.getSerialNumber().substring(12, 16) + " alignTable";
+  String logName = "AlignTables/" + inColormax.getSerialNumber().substring(12, 16) + "_alignTable";
   inColormax.newLog(logName);
   inColormax.readAlignmentPoint(0);
   int startMillis = millis();
@@ -537,7 +537,7 @@ void getAlignTable(Colormax inColormax) {
 // Get Temp Table **************************************************
 void getTempTable(Colormax inColormax) {
   inColormax.setStatus("gettingTempTable");
-  String logName = inColormax.getSerialNumber().substring(12, 16) + " tempTable";
+  String logName = "TempTables/" + inColormax.getSerialNumber().substring(12, 16) + "_tempTable";
   inColormax.newLog(logName);
   inColormax.readTempPoint(0);
   int startMillis = millis();
@@ -551,6 +551,50 @@ void getTempTable(Colormax inColormax) {
       return;
     }
   }
+}
+
+boolean getUDID(Colormax inColormax){
+  // To get the UDID, we need to send the !D command
+  // To use the !D command, we need to use the !Z command first
+  // To use the !Z command, we need the serial number reversed in pairs of two hex digits
+  // e.g. inSN == "0123 4567 89AB CDEF", outSN == "EFCD AB89 6745 2301"
+  
+  final int commandDelay = 50;        // Delay in milliseconds required between serial commands (range: 25-infinity)
+  final int responseTimeout = 250;    // Delay for colormax response timeout (range: 25 - infinity)
+  String tempSerialNumber = inColormax.getSerialNumber();  // we may not need this
+  inColormax.setSerialNumber(null);                        //serialNumber = null so we can check for if we've got an update or not
+  inColormax.readIdentity();          // Ask for colormax's serial number - this is to make sure we have the right serial number as it's not updated if a new colormax is connected and its info not grabbed
+  
+  int startMillis = millis();         // Starting point for response timeout
+  while(inColormax.getSerialNumber() == null){
+    delay(1);                                             // Required, otherwise this function goes too fast
+    if((millis() - startMillis) > responseTimeout){       // Check if we've timed out
+      inColormax.setSerialNumber(tempSerialNumber);       // If not, set this back, I guess?
+      println("@@@@@@@@@@", inColormax.serial.port.getPortName(),", getUDID serial number response timeout @@@@@@@@@@");  // Print out an error
+      return false;                                             // Leave this function!
+    }
+  }
+  
+  // Now that we know for sure we have the right serial number
+  char[] sn = inColormax.getSerialNumber().toCharArray();  // Make it an array; easier to maniuplate indiviudal characters like this
+  char[] sn2 = new char[16];                               // Make a second array to store the deletion code (this will be used to make a string later)
+  
+  int i;                            // For iterating through sn
+  int j = 0;                        // For iterating through sn2
+  for(i = (sn.length - 1) ; i > 0 ; i -= 2){     // Start from the end of sn[], make sure we stay above 0, decrement by 2
+    sn2[j++] = sn[i-1];             // Increment through sn2[], go half-backwards through sn[] (it's weird, i know)
+    sn2[j++] = sn[i];
+  }
+  
+  // We can finally send the !Z and !D commands
+  String serialNumberDeletionCode = new String(sn2);              // The !Z command actually deletes the unit's serial number; we need it as a string for our function
+  inColormax.writeDeleteSerialNumber(serialNumberDeletionCode);   // Tell the unit to delete its serial number; no worries, we have its serial number stored in the object for later
+  delay(commandDelay);                                            // Wait a little while for the unit to do its thing
+  inColormax.readUDID();                                          // Send the !D command
+  delay(commandDelay);                                            // Wait a little while for the unit to do its thing
+  inColormax.writeSerialNumber(inColormax.getSerialNumber());     // Send the !I command to have the unit rewrite its serial number!
+  //println(inColormax.getUDID());
+  return true;// All done
 }
 
 // Key Pressed Event Listener **************************************************
@@ -567,8 +611,10 @@ void serialEvent(Serial inPort) {
   String inString = inPort.readString();
   // TO DO: MAKE FUNCTION TO FIGURE OUT WHICH COLORMAX MESSAGE CAME FROM
 
+  // Print out all serial responses to the text box
   println("Recieved:", inString);  //for debugging
-
+  txtColormaxResponses.appendText(inString);
+  
   // Check if it's a colormax response
   // If it is, and we're looking for colormaxes,
   // update the map
@@ -589,11 +635,18 @@ void serialEvent(Serial inPort) {
   }  
 
   if (inString.startsWith("!d")) {
-    //println(inString);
-    if (colormaxes[listColormaxSelect.getSelectedIndex()].getStatus() == colormaxes[listColormaxSelect.getSelectedIndex()].settingIlluminationFactor) {
-      //int blue = Integer.parseInt(blueChannel, 16);
-      colormaxes[listColormaxSelect.getSelectedIndex()].lightAdjustmentCalibrateContinue(Integer.parseInt(inString.substring(13, 17), 16));
-    }
+    colormaxes[listColormaxSelect.getSelectedIndex()].parseData(inString);
+    return;
+  }
+  
+  if (inString.startsWith("!D")){
+    colormaxes[listColormaxSelect.getSelectedIndex()].parseUDID(inString);
+    txtUDID.setText(colormaxes[listColormaxSelect.getSelectedIndex()].getUDID());
+    //inColormax.getSerialNumber().substring(12, 16) + " tempTable";
+    String logName = "UDIDs/" + colormaxes[listColormaxSelect.getSelectedIndex()].getSerialNumber() + "_UDID";
+    colormaxes[listColormaxSelect.getSelectedIndex()].newLog(logName);
+    colormaxes[listColormaxSelect.getSelectedIndex()].writeToLog(colormaxes[listColormaxSelect.getSelectedIndex()].getUDID());
+    colormaxes[listColormaxSelect.getSelectedIndex()].endLog();
     return;
   }
 
@@ -661,22 +714,9 @@ void serialEvent(Serial inPort) {
     }
   }
 
-  //if (inString.startsWith("!O,6")) {
-  //  if (inString.equals("!O,6,1\r")) {
-  //    if (testBit(colormaxes[listColormaxSelect.getSelectedIndex()].isBusy(), 6)) {
-  //      colormaxes[listColormaxSelect.getSelectedIndex()].stopGetAlign();
-  //      colormaxes[listColormaxSelect.getSelectedIndex()].writeAlignmentOn();
-  //      String numberOfPoints = "Number of points: " + String.valueOf(colormaxes[listColormaxSelect.getSelectedIndex()].getAlignIndex());
-  //      colormaxes[listColormaxSelect.getSelectedIndex()].writeToLog(numberOfPoints);
-  //      colormaxes[listColormaxSelect.getSelectedIndex()].endLog();
-  //      return;
-  //    }
-  //  } else if (testBit(colormaxes[listColormaxSelect.getSelectedIndex()].isBusy(), 6)) {
-  //    colormaxes[listColormaxSelect.getSelectedIndex()].writeToLog(inString);
-  //    colormaxes[listColormaxSelect.getSelectedIndex()].continueGetAlign();
-  //    return;
-  //  }
-  //}
+  if(inString.startsWith("!w")){
+    colormaxes[listColormaxSelect.getSelectedIndex()].parseTemperature(inString);
+  }
 
   // @@@@@@@@@@ End of serialEvent() @@@@@@@@@@
 }

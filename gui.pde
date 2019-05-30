@@ -109,7 +109,7 @@ public void btnCalibrateLight_click1(GButton source, GEvent event) { //_CODE_:bt
 } //_CODE_:btnCalibrateLight:477821:
 
 public void txtSerialNumberInput_change1(GTextField source, GEvent event) { //_CODE_:txtSerialNumberInput:346953:
-  println("txtSerialNumberInput - GTextField >> GEvent." + event + " @ " + millis());
+  //println("txtSerialNumberInput - GTextField >> GEvent." + event + " @ " + millis());
 } //_CODE_:txtSerialNumberInput:346953:
 
 public void btnChangeSerialNumber_click1(GButton source, GEvent event) { //_CODE_:btnChangeSerialNumber:630693:
@@ -221,6 +221,19 @@ public void btnGetTempTable_click1(GButton source, GEvent event) { //_CODE_:btnG
   println("btnGetTempTable - GButton >> GEvent." + event + " @ " + millis());
   getTempTable(colormaxes[listColormaxSelect.getSelectedIndex()]);
 } //_CODE_:btnGetTempTable:816415:
+
+public void txtColormaxResponses_change1(GTextArea source, GEvent event) { //_CODE_:txtColormaxResponses:708137:
+  //println("textarea1 - GTextArea >> GEvent." + event + " @ " + millis());
+} //_CODE_:txtColormaxResponses:708137:
+
+public void txtUDID_change1(GTextField source, GEvent event) { //_CODE_:txtUDID:516251:
+  //println("txtUDID - GTextField >> GEvent." + event + " @ " + millis());
+} //_CODE_:txtUDID:516251:
+
+public void btnGetUDID_click1(GButton source, GEvent event) { //_CODE_:btnGetUDID:301723:
+  println("btnGetUDID - GButton >> GEvent." + event + " @ " + millis());
+  getUDID(colormaxes[listColormaxSelect.getSelectedIndex()]);
+} //_CODE_:btnGetUDID:301723:
 
 
 
@@ -493,20 +506,20 @@ public void createGUI(){
   btnCalibrateLight.setTextBold();
   btnCalibrateLight.setLocalColorScheme(GCScheme.RED_SCHEME);
   btnCalibrateLight.addEventHandler(this, "btnCalibrateLight_click1");
-  txtSerialNumberInput = new GTextField(this, 260, 390, 190, 20, G4P.SCROLLBARS_NONE);
+  txtSerialNumberInput = new GTextField(this, 260, 270, 190, 20, G4P.SCROLLBARS_NONE);
   txtSerialNumberInput.setPromptText("New Serial Number");
   txtSerialNumberInput.setOpaque(true);
   txtSerialNumberInput.addEventHandler(this, "txtSerialNumberInput_change1");
-  btnChangeSerialNumber = new GButton(this, 260, 420, 190, 20);
+  btnChangeSerialNumber = new GButton(this, 260, 300, 190, 20);
   btnChangeSerialNumber.setText("Change Serial Number");
   btnChangeSerialNumber.setTextBold();
   btnChangeSerialNumber.addEventHandler(this, "btnChangeSerialNumber_click1");
-  btnClearSerialNumber = new GButton(this, 260, 450, 190, 20);
+  btnClearSerialNumber = new GButton(this, 260, 330, 190, 20);
   btnClearSerialNumber.setText("Clear Serial Number");
   btnClearSerialNumber.setTextBold();
   btnClearSerialNumber.setLocalColorScheme(GCScheme.RED_SCHEME);
   btnClearSerialNumber.addEventHandler(this, "btnClearSerialNumber_click1");
-  btnSendSettings = new GButton(this, 260, 210, 190, 20);
+  btnSendSettings = new GButton(this, 260, 220, 190, 20);
   btnSendSettings.setText("Send Settings");
   btnSendSettings.setTextBold();
   btnSendSettings.addEventHandler(this, "btnSendSettings_click1");
@@ -543,13 +556,13 @@ public void createGUI(){
   lblLedStabilityData = new GLabel(this, 120, 270, 80, 20);
   lblLedStabilityData.setText("N/A");
   lblLedStabilityData.setOpaque(false);
-  btnSetLight50 = new GButton(this, 460, 520, 100, 20);
+  btnSetLight50 = new GButton(this, 460, 510, 100, 20);
   btnSetLight50.setText("Set Light 50%");
   btnSetLight50.addEventHandler(this, "btnSetLight50_click1");
-  btnSetLight100 = new GButton(this, 570, 520, 100, 20);
+  btnSetLight100 = new GButton(this, 570, 510, 100, 20);
   btnSetLight100.setText("Set Light 100%");
   btnSetLight100.addEventHandler(this, "btnSetLight100_click1");
-  btnCheatButton1337 = new GButton(this, 460, 550, 210, 20);
+  btnCheatButton1337 = new GButton(this, 460, 540, 210, 20);
   btnCheatButton1337.setText("Step 6 Cheat Button");
   btnCheatButton1337.setTextBold();
   btnCheatButton1337.setTextItalic();
@@ -601,6 +614,26 @@ public void createGUI(){
   btnGetTempTable.setText("Get Temp Table");
   btnGetTempTable.setTextBold();
   btnGetTempTable.addEventHandler(this, "btnGetTempTable_click1");
+  txtColormaxResponses = new GTextArea(this, 790, 50, 220, 510, G4P.SCROLLBARS_VERTICAL_ONLY | G4P.SCROLLBARS_AUTOHIDE);
+  txtColormaxResponses.setOpaque(true);
+  txtColormaxResponses.addEventHandler(this, "txtColormaxResponses_change1");
+  lblColormaxResponses = new GLabel(this, 790, 30, 220, 20);
+  lblColormaxResponses.setTextAlign(GAlign.CENTER, GAlign.MIDDLE);
+  lblColormaxResponses.setText("Colormax Responses");
+  lblColormaxResponses.setTextBold();
+  lblColormaxResponses.setOpaque(false);
+  txtUDID = new GTextField(this, 300, 390, 150, 20, G4P.SCROLLBARS_NONE);
+  txtUDID.setOpaque(true);
+  txtUDID.addEventHandler(this, "txtUDID_change1");
+  btnGetUDID = new GButton(this, 260, 420, 190, 20);
+  btnGetUDID.setText("Get UDID");
+  btnGetUDID.setTextBold();
+  btnGetUDID.addEventHandler(this, "btnGetUDID_click1");
+  lblUDID = new GLabel(this, 260, 390, 40, 20);
+  lblUDID.setTextAlign(GAlign.RIGHT, GAlign.MIDDLE);
+  lblUDID.setText("UDID:");
+  lblUDID.setTextBold();
+  lblUDID.setOpaque(false);
 }
 
 // Variable declarations 
@@ -689,3 +722,8 @@ GButton btnRetakePoint;
 GButton btnCancel; 
 GButton btnGetAlignTable; 
 GButton btnGetTempTable; 
+GTextArea txtColormaxResponses; 
+GLabel lblColormaxResponses; 
+GTextField txtUDID; 
+GButton btnGetUDID; 
+GLabel lblUDID; 
