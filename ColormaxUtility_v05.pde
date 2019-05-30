@@ -523,14 +523,34 @@ void getAlignTable(Colormax inColormax) {
   String logName = inColormax.getSerialNumber().substring(12, 16) + " alignTable";
   inColormax.newLog(logName);
   inColormax.readAlignmentPoint(0);
+  int startMillis = millis();
+  while(inColormax.getStatus() != "idle"){
+    delay(1);
+    if(millis() - startMillis > 1000){
+      inColormax.setStatus("idle");
+      println("@@@@@@@@@@ getAlignTable() timeout @@@@@@@@@@");
+      return;
+    }
+  }
 }
 
-// Get Align Table **************************************************
+// Get Temp Table **************************************************
 void getTempTable(Colormax inColormax) {
   inColormax.setStatus("gettingTempTable");
   String logName = inColormax.getSerialNumber().substring(12, 16) + " tempTable";
   inColormax.newLog(logName);
   inColormax.readTempPoint(0);
+  int startMillis = millis();
+  while(!inColormax.getStatus().contains("idle")){
+    delay(1);
+    if(millis() - startMillis > 1000){
+      inColormax.setStatus("idle");
+      inColormax.writeToLog("Timed out");
+      inColormax.endLog();
+      println("@@@@@@@@@@ getTempTable() timeout @@@@@@@@@@");
+      return;
+    }
+  }
 }
 
 // Key Pressed Event Listener **************************************************
@@ -604,6 +624,9 @@ void serialEvent(Serial inPort) {
     return;
   }
   
+  // Bug found having to do with connecting/disconnecting the Colormax
+  // Typically we wind up with some random character in the buffer, and that causes 
+  // the string.startsWith() to return false becuase the string actually looks something like "~!N,6,0,00..."
   if (inString.startsWith("!N")) {
     if (inString.startsWith("!N,6")) {
       if (colormaxes[listColormaxSelect.getSelectedIndex()].getStatus() == ("gettingTempTable")) {
