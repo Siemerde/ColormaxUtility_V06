@@ -517,6 +517,18 @@ void cheatButton1337() {
   
 }
 
+// Get Align Table **************************************************
+volatile int point;
+volatile Colormax currentColormax;
+void getAlignTable(Colormax inColormax){
+  
+  String logName = inColormax.getSerialNumber().substring(12,16) + " alignTable";
+  inColormax.newLog(logName);
+  inColormax.readAlignmentPoint(0);
+  
+  
+}
+
 // Key Pressed Event Listener **************************************************
 void keyPressed() {
   // Spacebar Shortcut Handler
@@ -548,10 +560,11 @@ void serialEvent(Serial inPort) {
     else if(checkingLine){
       colormaxOnLine = true;
     }
+    else if(colormaxes[listColormaxSelect.getSelectedIndex()].getStatus() == "gettingAlignTable"){
+      colormaxes[listColormaxSelect.getSelectedIndex()].setStatus("idle");
+    }
     return;
-  }
-
-  
+  }  
 
   if (inString.startsWith("!d")) {
     //println(inString);
@@ -590,6 +603,12 @@ void serialEvent(Serial inPort) {
   }
 
   if (inString.startsWith("!O")) {
+    if(inString.startsWith("!O,6")){
+      int point = Integer.parseInt(inString.substring(7,9), 16) + 1;    //Integer.parseInt(inClt.substring(3, 7), 16);
+      println("point: ", point);
+      colormaxes[listColormaxSelect.getSelectedIndex()].readAlignmentPoint(point);
+    }
+    
     if(inString.startsWith("!O,8,0")){
       
     }

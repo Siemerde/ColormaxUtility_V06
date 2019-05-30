@@ -212,9 +212,9 @@ public void btnCancel_click1(GButton source, GEvent event) { //_CODE_:btnCancel:
   cancelAlignRetake(colormaxes[listColormaxSelect.getSelectedIndex()]);
 } //_CODE_:btnCancel:511767:
 
-public void btnGetColorTable_click1(GButton source, GEvent event) { //_CODE_:btnGetColorTable:237531:
+public void btnGetAlignTable_click1(GButton source, GEvent event) { //_CODE_:btnGetAlignTable:237531:
   println("btnGetColorTable - GButton >> GEvent." + event + " @ " + millis());
-} //_CODE_:btnGetColorTable:237531:
+} //_CODE_:btnGetAlignTable:237531:
 
 public void btnGetTempTable_click1(GButton source, GEvent event) { //_CODE_:btnGetTempTable:816415:
   println("btnGetTempTable - GButton >> GEvent." + event + " @ " + millis());
@@ -591,10 +591,10 @@ public void createGUI(){
   btnCancel.setTextBold();
   btnCancel.setLocalColorScheme(GCScheme.YELLOW_SCHEME);
   btnCancel.addEventHandler(this, "btnCancel_click1");
-  btnGetColorTable = new GButton(this, 460, 320, 100, 20);
-  btnGetColorTable.setText("Get Color Table");
-  btnGetColorTable.setTextBold();
-  btnGetColorTable.addEventHandler(this, "btnGetColorTable_click1");
+  btnGetAlignTable = new GButton(this, 460, 320, 100, 20);
+  btnGetAlignTable.setText("Get Align Table");
+  btnGetAlignTable.setTextBold();
+  btnGetAlignTable.addEventHandler(this, "btnGetAlignTable_click1");
   btnGetTempTable = new GButton(this, 460, 450, 100, 20);
   btnGetTempTable.setText("Get Temp Table");
   btnGetTempTable.setTextBold();
@@ -685,5 +685,5 @@ GButton btnSendTargets;
 GCheckbox chkBeepOnRead; 
 GButton btnRetakePoint; 
 GButton btnCancel; 
-GButton btnGetColorTable; 
+GButton btnGetAlignTable; 
 GButton btnGetTempTable; 
