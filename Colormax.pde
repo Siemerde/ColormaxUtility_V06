@@ -935,7 +935,7 @@ class Colormax
   // Desc: flushes and closes the current log
   //**************************************************
   void endLog() {
-    println("Ending Log");
+    //println("Ending Log");
     utilFlushAndClose(writer);
   }
 
@@ -944,7 +944,7 @@ class Colormax
   // Desc: Writes a line to the current log
   //**************************************************
   void writeToLog(String input) {
-    println("Writing to log: ", input);
+    //println("Writing to log: ", input);
     writer.println(input);
   }
   
@@ -1047,10 +1047,11 @@ class Colormax
    // pointNumber max = 14
    //serial.write(String.format("%02X", pointNumber));
     String outString = "!O,6," + (String.format("%02X", pointNumber));
-    println("@@@@@@@@@@ CHECK ME AND MAKE SURE I LOOK GOOD, BB @@@@@@@@@@");
-    println("readAlignmentPoint outstring:", outString);
-    println("@@@@@@@@@@ CHECK ME AND MAKE SURE I LOOK GOOD, BB @@@@@@@@@@");
+    //println("@@@@@@@@@@ CHECK ME AND MAKE SURE I LOOK GOOD, BB @@@@@@@@@@");
+    //println("readAlignmentPoint outstring:", outString);
+    //println("@@@@@@@@@@ CHECK ME AND MAKE SURE I LOOK GOOD, BB @@@@@@@@@@");
     serial.write(outString);
+    serial.write(13);
   }
   
   //// add conversion and string building

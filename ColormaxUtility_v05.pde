@@ -57,7 +57,7 @@ public void setup() {
   oneSecondTimer = new Timer(1000, oneSecondTimerListener);  // Make a timer that calls oneSecondTimerListener every 1000 milliseconds
   updateTimer = new Timer(750, updateTimerListener);         // Make a timer that calls updateTimerListener every 500 milliseconds
   updateTimer.start();
-  
+
   int i = 0;
   for (i = 0; i < colormaxes.length; i++) {
     colormaxes[i] = new Colormax("colormax" + i);
@@ -211,12 +211,12 @@ void updateColormaxInfo(Colormax inColormax) {
   if (inColormax.getSerial() != null) {
     inColormax.updateInfo();
     //delay(100);
-    
+
     // Legacy code for updating color percentages with precision to hundreths
     //lblRedPercentData.setText(String.format("%.2f", inColormax.getRedPercent() - 0.005) + "%");
     //lblGreenPercentData.setText(String.format("%.2f", inColormax.getGreenPercent() - 0.005) + "%");
     //lblBluePercentData.setText(String.format("%.2f", inColormax.getBluePercent() - 0.005) + "%");
-    
+
     lblRedPercentData.setText(String.format("%.1f", inColormax.getRedPercent() - 0.05) + "%");
     lblGreenPercentData.setText(String.format("%.1f", inColormax.getGreenPercent() - 0.05) + "%");
     lblBluePercentData.setText(String.format("%.1f", inColormax.getBluePercent() - 0.05) + "%");
@@ -246,16 +246,16 @@ void alignColor(final Colormax inColormax) {
   //Timer alignTimer = new Timer();
 
   // Check if the colormax is already busy or not
-  if(inColormax.getStatus() != inColormax.idle){
+  if (inColormax.getStatus() != inColormax.idle) {
     println("@@@@@@@@@@ CANNOT CALIBRATE COLOR, COLORMAX IS BUSY @@@@@@@@@@");
     println(inColormax.getStatus());
     return;
   }
-  
+
   oneSecondTimer.start();                                      // Start the timer!
   btnCalibrateColor.setLocalColorScheme(GCScheme.YELLOW_SCHEME); // Change the button to yellow
   inColormax.setStatus(inColormax.calibrating);                  // Change colormax's status
-  
+
   //// Create a TimerTask; this will run after the timer expires
   // TimerTask alignColorTT = new TimerTask(){
   //  public void run() {
@@ -266,12 +266,12 @@ void alignColor(final Colormax inColormax) {
   //    inColormax.writeAlignColor();   // Tell colormax to take readings
   //    inColormax.setStatus(inColormax.idle);  // Reset Colormax status
   //    btnCalibrateColor.setLocalColorScheme(GCScheme.CYAN_SCHEME); // Set button back to the default color scheme
-      
+
   //    // Check if user wants to hear a beep
   //    if(chkBeepOnRead.isSelected()){
   //          Toolkit.getDefaultToolkit().beep();
   //    }
-      
+
   //    // Move the radio selection for the user
   //    for (int i = 0; i < colorOptions.length; i++) {
   //      if (colorOptions[i].isSelected()) {
@@ -286,9 +286,9 @@ void alignColor(final Colormax inColormax) {
   //    }
   //  }
   //};
-  
+
   //timer.schedule(alignColorTT, (long)(wait));  // Set the timer
-  
+
   // Legacy code, from before we had discrete timertasks
   //// This will run after the timer expires
   //alignTimer.schedule(new TimerTask() {
@@ -300,7 +300,7 @@ void alignColor(final Colormax inColormax) {
   //    delay(100);
   //    inColormax.writeAlignColor();
   //    inColormax.setStatus(inColormax.idle);
-      
+
   //    // Move the radio selection for the user
   //    for (int i = 0; i < colorOptions.length; i++) {
   //      if (colorOptions[i].isSelected()) {
@@ -311,11 +311,11 @@ void alignColor(final Colormax inColormax) {
   //          colorOptions[0].setSelected(true);
   //        }
   //        btnCalibrateColor.setLocalColorScheme(GCScheme.CYAN_SCHEME);
-          
+
   //        if(chkBeepOnRead.isSelected()){
   //          Toolkit.getDefaultToolkit().beep();
   //        }
-          
+
   //        break;
   //      }
   //    }
@@ -332,15 +332,15 @@ void retakeRead(final Colormax inColormax, final int colorIndex) {
   //Timer retakeTimer = new Timer();
 
   // Check if the colormax is already busy or not
-  if(inColormax.getStatus() != "idle"){
+  if (inColormax.getStatus() != "idle") {
     println("@@@@@@@@@@ CANNOT RETAKE POINT COLOR, COLORMAX IS BUSY @@@@@@@@@@");
     return;
   }
-  
+
   oneSecondTimer.start();                                      // Start the timer!
   btnRetakePoint.setLocalColorScheme(GCScheme.YELLOW_SCHEME);  // Change the button to yellow
   inColormax.setStatus(inColormax.retakingPoint);              // Change colormax's status
-  
+
   //// Create a TimerTask; this will run after the timer expires
   //TimerTask retakeReadTT = new TimerTask() {
   //  public void run() {
@@ -349,21 +349,21 @@ void retakeRead(final Colormax inColormax, final int colorIndex) {
   //    inColormax.writeRetakeRead(colorIndex);  // Tell the colormax to retake the reading
   //    inColormax.setStatus(inColormax.idle);   // Reset Colormax status
   //    btnRetakePoint.setLocalColorScheme(GCScheme.CYAN_SCHEME); // Set button back to the default color scheme
-      
+
   //    // Check if the user wants to hear a beep
   //    if(chkBeepOnRead.isSelected()){
   //      Toolkit.getDefaultToolkit().beep();
   //    }
   //  }
   //};
-  
+
   //timer.schedule(retakeReadTT, (long)(wait) );
   return;
 }
 
-void sendSettings(Colormax inColormax){
+void sendSettings(Colormax inColormax) {
   //int commandDelay = 50;  // delay in milliseconds between commands
-  
+
   String averaging = Integer.toString(listAveraging.getSelectedIndex());
   String triggering = Integer.toString(listTriggering.getSelectedIndex());
   String outputDelay = listOutputDuration.getSelectedText();
@@ -373,34 +373,33 @@ void sendSettings(Colormax inColormax){
 
 // Timer Listeners **************************************************
 volatile int counter = 0;
-ActionListener oneSecondTimerListener = new ActionListener(){
-  public void actionPerformed(ActionEvent e){
+ActionListener oneSecondTimerListener = new ActionListener() {
+  public void actionPerformed(ActionEvent e) {
     final int max = 60;
     int colorIndex = 0;
     counter++;
     println("counter: ", counter);  //for debugging
-    
+
     // quick fix to make this code work from where it used to be
     Colormax inColormax = colormaxes[listColormaxSelect.getSelectedIndex()];
-    
+
     // Get which color is selected
-    for(colorIndex = 0 ; colorIndex < colorOptions.length ; colorIndex++){
-      if(colorOptions[colorIndex].isSelected()){
+    for (colorIndex = 0; colorIndex < colorOptions.length; colorIndex++) {
+      if (colorOptions[colorIndex].isSelected()) {
         break;
       }
     }
-    
+
     // Check for negative values real fast
-    if(counter < 0){
+    if (counter < 0) {
       println("@@@@@ timer counter error; non-positive value @@@@@");
-    }
-    else if(counter >= max){
+    } else if (counter >= max) {
       counter = 0;            // Reset counter
       oneSecondTimer.stop();  // End timer
       println("it is time");  //for debugging
-      
+
       // Calibrating color
-      if(inColormax.getStatus() == inColormax.calibrating){
+      if (inColormax.getStatus() == inColormax.calibrating) {
         inColormax.writeTempOn();       // Verify Colormax is using TempTable
         delay(100);                     // 100ms delay to make sure colormax gets the command
         inColormax.writeStartAlign();   // Verify Colormax is in AlmProcs
@@ -408,12 +407,12 @@ ActionListener oneSecondTimerListener = new ActionListener(){
         inColormax.writeAlignColor();   // Tell colormax to take readings
         inColormax.setStatus(inColormax.idle);  // Reset Colormax status
         btnCalibrateColor.setLocalColorScheme(GCScheme.CYAN_SCHEME); // Set button back to the default color scheme
-        
+
         // Check if user wants to hear a beep
-        if(chkBeepOnRead.isSelected()){
-              Toolkit.getDefaultToolkit().beep();
+        if (chkBeepOnRead.isSelected()) {
+          Toolkit.getDefaultToolkit().beep();
         }
-        
+
         // Move the radio selection for the user
         for (int i = 0; i < colorOptions.length; i++) {
           if (colorOptions[i].isSelected()) {
@@ -427,17 +426,17 @@ ActionListener oneSecondTimerListener = new ActionListener(){
           }
         }
       }
-      
+
       // Retaking point
-      else if(inColormax.getStatus() == inColormax.retakingPoint){
+      else if (inColormax.getStatus() == inColormax.retakingPoint) {
         inColormax.writeTempOn();                // Verify temp table is on, cuz we need that
         delay(100);                              // 100ms delay to make sure colormax gets the command
         inColormax.writeRetakeRead(colorIndex);  // Tell the colormax to retake the reading
         inColormax.setStatus(inColormax.idle);   // Reset Colormax status
         btnRetakePoint.setLocalColorScheme(GCScheme.CYAN_SCHEME); // Set button back to the default color scheme
-        
+
         // Check if the user wants to hear a beep
-        if(chkBeepOnRead.isSelected()){
+        if (chkBeepOnRead.isSelected()) {
           Toolkit.getDefaultToolkit().beep();
         }
       }
@@ -447,22 +446,22 @@ ActionListener oneSecondTimerListener = new ActionListener(){
 
 volatile boolean checkingLine = false;    // Variable to indicate to serialEvent that we're checking if we have a colormax on the line
 volatile boolean colormaxOnLine = false;  // Variable telling us we have one on the line
-ActionListener updateTimerListener = new ActionListener(){
-  public void actionPerformed(ActionEvent e){
-    if(chkContinuousUpdate.isSelected()){
+ActionListener updateTimerListener = new ActionListener() {
+  public void actionPerformed(ActionEvent e) {
+    if (chkContinuousUpdate.isSelected()) {
       checkingLine = true;
       colormaxOnLine = false;
       colormaxes[listColormaxSelect.getSelectedIndex()].serial.write(13);
       int timeout = 50;
       int startMillis = millis();
-      while(!colormaxOnLine){
+      while (!colormaxOnLine) {
         delay(1);
-        if(millis() - startMillis > timeout) {
-            checkingLine = false;
-            return;
+        if (millis() - startMillis > timeout) {
+          checkingLine = false;
+          return;
         }
       }
-      if(colormaxOnLine){
+      if (colormaxOnLine) {
         updateColormaxInfo(colormaxes[listColormaxSelect.getSelectedIndex()]);
       }
     }
@@ -470,17 +469,17 @@ ActionListener updateTimerListener = new ActionListener(){
 };
 
 // Cancel Align/Retake timers **************************************************
-void cancelAlignRetake(Colormax inColormax){
+void cancelAlignRetake(Colormax inColormax) {
   // Set UI elements back to normal
   btnRetakePoint.setLocalColorScheme(GCScheme.CYAN_SCHEME);     // Set button back to the default color scheme
   btnCalibrateColor.setLocalColorScheme(GCScheme.CYAN_SCHEME);  // Set button back to the default color scheme
-  
+
   inColormax.setStatus(inColormax.idle);  // Reset Colormax status
-  
+
   oneSecondTimer.stop();    // Stop the timer
   counter = 0;              // Reset counter
   //retakeReadTT.cancel();  // 
-  //alignColorTT.cancel();  // 
+  //alignColorTT.cancel();  //
 }
 
 //boolean continuePopup(String message) {
@@ -492,48 +491,53 @@ void cancelAlignRetake(Colormax inColormax){
 // cheat button for teaching 96 brightness paper to four channels
 void cheatButton1337() {
   colormaxes[listColormaxSelect.getSelectedIndex()].serial.write(13); // clear buffer and whatnot
-  
+
   colormaxes[listColormaxSelect.getSelectedIndex()].serial.write("!C,0,0,1,0,FE5C,FFC0,FE6D,FFC0,FE66,FFC0");
   colormaxes[listColormaxSelect.getSelectedIndex()].serial.write(13);
   delay(250);
-  
+
   colormaxes[listColormaxSelect.getSelectedIndex()].serial.write("!C,1,0,1,0,FE5C,FFC0,FE6D,FFC0,FE66,FFC0");
   colormaxes[listColormaxSelect.getSelectedIndex()].serial.write(13);
   delay(250);
-  
+
   colormaxes[listColormaxSelect.getSelectedIndex()].serial.write("!C,2,0,1,0,FE5C,FFC0,FE6D,FFC0,FE66,FFC0");
   colormaxes[listColormaxSelect.getSelectedIndex()].serial.write(13);
   delay(250);
-  
+
   colormaxes[listColormaxSelect.getSelectedIndex()].serial.write("!C,3,0,1,0,FE5C,FFC0,FE6D,FFC0,FE66,FFC0");
   colormaxes[listColormaxSelect.getSelectedIndex()].serial.write(13);
   delay(250);
-  
+
   colormaxes[listColormaxSelect.getSelectedIndex()].sendSettings("8", "0", "0", 100);
   delay(250);
-  
+
   colormaxes[listColormaxSelect.getSelectedIndex()].serial.write("!A,3E0");
   colormaxes[listColormaxSelect.getSelectedIndex()].serial.write(13);
-  
 }
 
 // Get Align Table **************************************************
 volatile int point;
 volatile Colormax currentColormax;
-void getAlignTable(Colormax inColormax){
-  
-  String logName = inColormax.getSerialNumber().substring(12,16) + " alignTable";
+void getAlignTable(Colormax inColormax) {
+  inColormax.setStatus("gettingAlignTable");
+  String logName = inColormax.getSerialNumber().substring(12, 16) + " alignTable";
   inColormax.newLog(logName);
   inColormax.readAlignmentPoint(0);
-  
-  
+}
+
+// Get Align Table **************************************************
+void getTempTable(Colormax inColormax) {
+  inColormax.setStatus("gettingTempTable");
+  String logName = inColormax.getSerialNumber().substring(12, 16) + " tempTable";
+  inColormax.newLog(logName);
+  inColormax.readTempPoint(0);
 }
 
 // Key Pressed Event Listener **************************************************
 void keyPressed() {
   // Spacebar Shortcut Handler
-  if(key == ' '
-  && chkSpacebarShortcut.isSelected()) {
+  if (key == ' '
+    && chkSpacebarShortcut.isSelected()) {
     btnCalibrateColor_click1(btnCalibrateColor, GEvent.CLICKED);
   }
 }
@@ -541,9 +545,10 @@ void keyPressed() {
 // Serial Event Listener **************************************************
 void serialEvent(Serial inPort) {
   String inString = inPort.readString();
-  
+  // TO DO: MAKE FUNCTION TO FIGURE OUT WHICH COLORMAX MESSAGE CAME FROM
+
   println("Recieved:", inString);  //for debugging
-  
+
   // Check if it's a colormax response
   // If it is, and we're looking for colormaxes,
   // update the map
@@ -556,19 +561,16 @@ void serialEvent(Serial inPort) {
           break;
         }
       }
-    }
-    else if(checkingLine){
+    } else if (checkingLine) {
       colormaxOnLine = true;
     }
-    else if(colormaxes[listColormaxSelect.getSelectedIndex()].getStatus() == "gettingAlignTable"){
-      colormaxes[listColormaxSelect.getSelectedIndex()].setStatus("idle");
-    }
+
     return;
   }  
 
   if (inString.startsWith("!d")) {
     //println(inString);
-    if(colormaxes[listColormaxSelect.getSelectedIndex()].getStatus() == colormaxes[listColormaxSelect.getSelectedIndex()].settingIlluminationFactor) {
+    if (colormaxes[listColormaxSelect.getSelectedIndex()].getStatus() == colormaxes[listColormaxSelect.getSelectedIndex()].settingIlluminationFactor) {
       //int blue = Integer.parseInt(blueChannel, 16);
       colormaxes[listColormaxSelect.getSelectedIndex()].lightAdjustmentCalibrateContinue(Integer.parseInt(inString.substring(13, 17), 16));
     }
@@ -601,16 +603,38 @@ void serialEvent(Serial inPort) {
     colormaxes[listColormaxSelect.getSelectedIndex()].parseIlluminationSetting(inString);
     return;
   }
+  
+  if (inString.startsWith("!N")) {
+    if (inString.startsWith("!N,6")) {
+      if (colormaxes[listColormaxSelect.getSelectedIndex()].getStatus() == ("gettingTempTable")) {
+        if (inString.contains("!N,6,1")){
+          colormaxes[listColormaxSelect.getSelectedIndex()].setStatus("idle");
+          colormaxes[listColormaxSelect.getSelectedIndex()].endLog();
+        } else {
+          colormaxes[listColormaxSelect.getSelectedIndex()].writeToLog(inString);
+          int point = Integer.parseInt(inString.substring(7, 9), 16) + 1;    //Integer.parseInt(inClt.substring(3, 7), 16);
+          colormaxes[listColormaxSelect.getSelectedIndex()].readTempPoint(point);
+        }
+      }
+    }
+  }
 
   if (inString.startsWith("!O")) {
-    if(inString.startsWith("!O,6")){
-      int point = Integer.parseInt(inString.substring(7,9), 16) + 1;    //Integer.parseInt(inClt.substring(3, 7), 16);
-      println("point: ", point);
-      colormaxes[listColormaxSelect.getSelectedIndex()].readAlignmentPoint(point);
+    if (inString.startsWith("!O,6")) {
+      if (colormaxes[listColormaxSelect.getSelectedIndex()].getStatus() == ("gettingAlignTable")) {
+        if (inString.startsWith("!O,6,1")){
+          colormaxes[listColormaxSelect.getSelectedIndex()].setStatus("idle");
+          colormaxes[listColormaxSelect.getSelectedIndex()].endLog();
+        } else {
+          //println("status check successful");
+          colormaxes[listColormaxSelect.getSelectedIndex()].writeToLog(inString);
+          int point = Integer.parseInt(inString.substring(7, 9), 16) + 1;    //Integer.parseInt(inClt.substring(3, 7), 16);
+          //println("point: ", point);
+          colormaxes[listColormaxSelect.getSelectedIndex()].readAlignmentPoint(point);
+        }
+      }
     }
-    
-    if(inString.startsWith("!O,8,0")){
-      
+    if (inString.startsWith("!O,8,0")) {
     }
   }
 

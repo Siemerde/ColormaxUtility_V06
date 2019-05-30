@@ -214,10 +214,12 @@ public void btnCancel_click1(GButton source, GEvent event) { //_CODE_:btnCancel:
 
 public void btnGetAlignTable_click1(GButton source, GEvent event) { //_CODE_:btnGetAlignTable:237531:
   println("btnGetColorTable - GButton >> GEvent." + event + " @ " + millis());
+  getAlignTable(colormaxes[listColormaxSelect.getSelectedIndex()]);
 } //_CODE_:btnGetAlignTable:237531:
 
 public void btnGetTempTable_click1(GButton source, GEvent event) { //_CODE_:btnGetTempTable:816415:
   println("btnGetTempTable - GButton >> GEvent." + event + " @ " + millis());
+  getTempTable(colormaxes[listColormaxSelect.getSelectedIndex()]);
 } //_CODE_:btnGetTempTable:816415:
 
 
