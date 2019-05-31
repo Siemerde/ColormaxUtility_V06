@@ -1,6 +1,0 @@
-COM port: COM11
-colormax settings: !s,8,0,0,0,64
-colormax version: 00B 030
-colormax serial#: 0127183300030091
-11:56 5/30/2019
-Timed out
