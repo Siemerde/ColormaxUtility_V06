@@ -1257,8 +1257,6 @@ class Colormax
     serial.write("!I,");
     serial.write(inSerialNumber);
     serial.write(13);
-    
-    
   }
 
   void readTemperature(){

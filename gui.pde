@@ -112,9 +112,11 @@ public void txtSerialNumberInput_change1(GTextField source, GEvent event) { //_C
   //println("txtSerialNumberInput - GTextField >> GEvent." + event + " @ " + millis());
 } //_CODE_:txtSerialNumberInput:346953:
 
-public void btnChangeSerialNumber_click1(GButton source, GEvent event) { //_CODE_:btnChangeSerialNumber:630693:
-  println("btnChangeSerialNumber - GButton >> GEvent." + event + " @ " + millis());
-} //_CODE_:btnChangeSerialNumber:630693:
+public void btnSendSerialNumber_click1(GButton source, GEvent event) { //_CODE_:btnSendSerialNumber:630693:
+  //println("btnChangeSerialNumber - GButton >> GEvent." + event + " @ " + millis());
+  sendSerialNumber(colormaxes[listColormaxSelect.getSelectedIndex()]);
+  
+} //_CODE_:btnSendSerialNumber:630693:
 
 public void btnClearSerialNumber_click1(GButton source, GEvent event) { //_CODE_:btnClearSerialNumber:920555:
   println("btnClearSerialNumber - GButton >> GEvent." + event + " @ " + millis());
@@ -514,12 +516,12 @@ public void createGUI(){
   txtSerialNumberInput.setPromptText("New Serial Number");
   txtSerialNumberInput.setOpaque(true);
   txtSerialNumberInput.addEventHandler(this, "txtSerialNumberInput_change1");
-  btnChangeSerialNumber = new GButton(this, 260, 300, 190, 20);
-  btnChangeSerialNumber.setText("Change Serial Number");
-  btnChangeSerialNumber.setTextBold();
-  btnChangeSerialNumber.addEventHandler(this, "btnChangeSerialNumber_click1");
+  btnSendSerialNumber = new GButton(this, 260, 300, 190, 20);
+  btnSendSerialNumber.setText("Send Serial Number");
+  btnSendSerialNumber.setTextBold();
+  btnSendSerialNumber.addEventHandler(this, "btnSendSerialNumber_click1");
   btnClearSerialNumber = new GButton(this, 260, 330, 190, 20);
-  btnClearSerialNumber.setText("Clear Serial Number");
+  btnClearSerialNumber.setText("Delete Serial Number");
   btnClearSerialNumber.setTextBold();
   btnClearSerialNumber.setLocalColorScheme(GCScheme.RED_SCHEME);
   btnClearSerialNumber.addEventHandler(this, "btnClearSerialNumber_click1");
@@ -710,7 +712,7 @@ GToggleGroup togGroup2;
 GButton btnCalibrateColor; 
 GButton btnCalibrateLight; 
 GTextField txtSerialNumberInput; 
-GButton btnChangeSerialNumber; 
+GButton btnSendSerialNumber; 
 GButton btnClearSerialNumber; 
 GButton btnSendSettings; 
 GButton btnStoreAlign; 

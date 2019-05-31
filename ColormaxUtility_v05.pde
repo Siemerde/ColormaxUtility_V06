@@ -519,6 +519,14 @@ boolean getUDID(Colormax inColormax){
   return true;// All done
 }
 
+void sendSerialNumber(Colormax inColormax){
+  if(txtSerialNumberInput.getText().length() != 16){
+    println("@@@@@@@@@@ sendSerialNumber() incorrect length serial number @@@@@@@@@@");
+  } else {
+    inColormax.writeSerialNumber(txtSerialNumberInput.getText());
+  }
+}
+
 // Key Pressed Event Listener **************************************************
 void keyPressed() {
   // Spacebar Shortcut Handler
@@ -556,6 +564,12 @@ void serialEvent(Serial inPort) {
     return;
   }  
 
+
+  if (inString.startsWith("!a")) {
+    colormaxes[listColormaxSelect.getSelectedIndex()].parseIlluminationSetting(inString);
+    return;
+  }
+
   if (inString.startsWith("!d")) {
     colormaxes[listColormaxSelect.getSelectedIndex()].parseData(inString);
     return;
@@ -572,9 +586,12 @@ void serialEvent(Serial inPort) {
     return;
   }
 
+  if (inString.startsWith("!g")) {
+    colormaxes[listColormaxSelect.getSelectedIndex()].parseIlluminationAlgorithm(inString);
+    return;
+  }
+
   if (inString.startsWith("!h")) {
-    //println("got clt");
-    //println(inString);
     colormaxes[listColormaxSelect.getSelectedIndex()].parseClt(inString);
     return;
   }
@@ -594,10 +611,6 @@ void serialEvent(Serial inPort) {
     return;
   }
 
-  if (inString.startsWith("!a")) {
-    colormaxes[listColormaxSelect.getSelectedIndex()].parseIlluminationSetting(inString);
-    return;
-  }
   
   // Bug found having to do with connecting/disconnecting the Colormax
   // Typically we wind up with some random character in the buffer, and that causes 
