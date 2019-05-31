@@ -208,35 +208,47 @@ void populateColormaxes() {
 
 // Update Colormax Info **************************************************
 void updateColormaxInfo(Colormax inColormax) {
-  if(inColormax != null && inColormax.getSerial() != null) {
-    inColormax.updateInfo();
+ if(inColormax != null && inColormax.getSerial() != null) {
+   final int commandDelay = 25;
+    
+   // Each command needs a short delay (at least 25ms) to get a response.
+   // And I'm too dumb to figure out how to make an array of methods to call with a for(){} loop
+   // No need for so many lines of code, so I've put the delay in-line with each method call
+   // like so: inColormax.readCLT();delay(commandDelay);
+   inColormax.readData();delay(commandDelay);
+   inColormax.readTemperature();delay(commandDelay);
+   inColormax.readIlluminationAlgorithm();delay(commandDelay);
+   inColormax.readSettings();delay(commandDelay);
+   inColormax.readIdentity();delay(commandDelay);
+   inColormax.readVersion();delay(commandDelay);
+   inColormax.readIlluminationFactor();delay(commandDelay);
 
-    lblRedPercentData.setText(String.format("%.1f", inColormax.getRedPercent() - 0.05) + "%");
-    lblGreenPercentData.setText(String.format("%.1f", inColormax.getGreenPercent() - 0.05) + "%");
-    lblBluePercentData.setText(String.format("%.1f", inColormax.getBluePercent() - 0.05) + "%");
+   lblRedPercentData.setText(String.format("%.1f", inColormax.getRedPercent() - 0.05) + "%");
+   lblGreenPercentData.setText(String.format("%.1f", inColormax.getGreenPercent() - 0.05) + "%");
+   lblBluePercentData.setText(String.format("%.1f", inColormax.getBluePercent() - 0.05) + "%");
     
-    //txtRedGreenBlue.setText(String.format("%.1f", inColormax.getRedPercent() - 0.05));
-    //txtRedGreenBlue.appendText("\t" + String.format("%.1f", inColormax.getGreenPercent() - 0.05));
-    //txtRedGreenBlue.appendText("\t" + String.format("%.1f", inColormax.getBluePercent() - 0.05));
+   txtRedGreenBlue.setText(String.format("%.1f", inColormax.getRedPercent() - 0.05));
+   txtRedGreenBlue.appendText(" \t" + String.format("%.1f", inColormax.getGreenPercent() - 0.05));
+   txtRedGreenBlue.appendText(" \t" + String.format("%.1f", inColormax.getBluePercent() - 0.05));
     
-    lblRedHexData.setText(String.valueOf(inColormax.getRed()) + "H");
-    lblGreenHexData.setText(String.valueOf(inColormax.getGreen()) + "H");
-    lblBlueHexData.setText(String.valueOf(inColormax.getBlue()) + "H");
-    lblTemperatureData.setText(String.format("%.2f", inColormax.getTemperature() - 0.005));
-    ////lblLEDCurrentData.setText(inColormax.getLedMa());
-    lblLEDCurrentData.setText(String.format("%.2f", inColormax.getLedMaFloat() - 0.005));
-    lblDACSettingData.setText(inColormax.getLedDac());
-    lblLedStabilityData.setText(inColormax.getLedStability());
-    lblAveragingData.setText(inColormax.getAveraging());
-    lblTriggeringData.setText(inColormax.getTriggering());
-    lblOutputDelayData.setText(inColormax.getOutputDelay());
-    lblIlluminationData.setText(String.valueOf(inColormax.getIllumination()));
-    lblModelData.setText(inColormax.getModel());
-    lblFirmwareVersionData.setText(inColormax.getVersion());
-    lblSerialNumberData.setText(inColormax.getSerialNumber());
-  } else {
-    println("no colormax, UwU");
-  }
+   lblRedHexData.setText(String.valueOf(inColormax.getRed()) + "H");
+   lblGreenHexData.setText(String.valueOf(inColormax.getGreen()) + "H");
+   lblBlueHexData.setText(String.valueOf(inColormax.getBlue()) + "H");
+   lblTemperatureData.setText(String.format("%.2f", inColormax.getTemperature() - 0.005));
+   ////lblLEDCurrentData.setText(inColormax.getLedMa());
+   lblLEDCurrentData.setText(String.format("%.2f", inColormax.getLedMaFloat() - 0.005));
+   lblDACSettingData.setText(inColormax.getLedDac());
+   lblLedStabilityData.setText(inColormax.getLedStability());
+   lblAveragingData.setText(inColormax.getAveraging());
+   lblTriggeringData.setText(inColormax.getTriggering());
+   lblOutputDelayData.setText(inColormax.getOutputDelay());
+   lblIlluminationData.setText(String.valueOf(inColormax.getIllumination()));
+   lblModelData.setText(inColormax.getModel());
+   lblFirmwareVersionData.setText(inColormax.getVersion());
+   lblSerialNumberData.setText(inColormax.getSerialNumber());
+ } else {
+   println("no colormax, UwU");
+ }
 }
 
 // Align Colors **************************************************
@@ -523,7 +535,7 @@ void serialEvent(Serial inPort) {
 
   // Print out all serial responses to the text box
   println("Recieved:", inString);  //for debugging
-  txtColormaxResponses.appendText(inString);
+  //txtColormaxResponses.appendText(inString);
   
   // Check if it's a colormax response
   // If it is, and we're looking for colormaxes,

@@ -222,10 +222,6 @@ public void btnGetTempTable_click1(GButton source, GEvent event) { //_CODE_:btnG
   getTempTable(colormaxes[listColormaxSelect.getSelectedIndex()]);
 } //_CODE_:btnGetTempTable:816415:
 
-public void txtColormaxResponses_change1(GTextArea source, GEvent event) { //_CODE_:txtColormaxResponses:708137:
-  //println("textarea1 - GTextArea >> GEvent." + event + " @ " + millis());
-} //_CODE_:txtColormaxResponses:708137:
-
 public void txtUDID_change1(GTextField source, GEvent event) { //_CODE_:txtUDID:516251:
   //println("txtUDID - GTextField >> GEvent." + event + " @ " + millis());
 } //_CODE_:txtUDID:516251:
@@ -238,6 +234,10 @@ public void btnGetUDID_click1(GButton source, GEvent event) { //_CODE_:btnGetUDI
 public void txtRedGreenBlue_change1(GTextField source, GEvent event) { //_CODE_:txtRedGreenBlue:961884:
   //println("txtRedGreenBlue - GTextField >> GEvent." + event + " @ " + millis());
 } //_CODE_:txtRedGreenBlue:961884:
+
+public void txtColormaxResponses_change1(GTextArea source, GEvent event) { //_CODE_:txtColormaxResponses:205539:
+  println("textarea1 - GTextArea >> GEvent." + event + " @ " + millis());
+} //_CODE_:txtColormaxResponses:205539:
 
 
 
@@ -618,9 +618,6 @@ public void createGUI(){
   btnGetTempTable.setText("Get Temp Table");
   btnGetTempTable.setTextBold();
   btnGetTempTable.addEventHandler(this, "btnGetTempTable_click1");
-  txtColormaxResponses = new GTextArea(this, 790, 50, 220, 20, G4P.SCROLLBARS_VERTICAL_ONLY | G4P.SCROLLBARS_AUTOHIDE);
-  txtColormaxResponses.setOpaque(true);
-  txtColormaxResponses.addEventHandler(this, "txtColormaxResponses_change1");
   lblColormaxResponses = new GLabel(this, 790, 30, 220, 20);
   lblColormaxResponses.setTextAlign(GAlign.CENTER, GAlign.MIDDLE);
   lblColormaxResponses.setText("Colormax Responses");
@@ -638,9 +635,17 @@ public void createGUI(){
   lblUDID.setText("UDID:");
   lblUDID.setTextBold();
   lblUDID.setOpaque(false);
-  txtRedGreenBlue = new GTextField(this, 10, 140, 240, 20, G4P.SCROLLBARS_NONE);
+  txtRedGreenBlue = new GTextField(this, 110, 180, 140, 20, G4P.SCROLLBARS_NONE);
   txtRedGreenBlue.setOpaque(true);
   txtRedGreenBlue.addEventHandler(this, "txtRedGreenBlue_change1");
+  lblCopyableRGB = new GLabel(this, 10, 180, 100, 20);
+  lblCopyableRGB.setTextAlign(GAlign.RIGHT, GAlign.MIDDLE);
+  lblCopyableRGB.setText("Copyable RGB:");
+  lblCopyableRGB.setTextBold();
+  lblCopyableRGB.setOpaque(false);
+  txtColormaxResponses = new GTextArea(this, 790, 50, 220, 510, G4P.SCROLLBARS_VERTICAL_ONLY | G4P.SCROLLBARS_AUTOHIDE);
+  txtColormaxResponses.setOpaque(true);
+  txtColormaxResponses.addEventHandler(this, "txtColormaxResponses_change1");
 }
 
 // Variable declarations 
@@ -729,9 +734,10 @@ GButton btnRetakePoint;
 GButton btnCancel; 
 GButton btnGetAlignTable; 
 GButton btnGetTempTable; 
-GTextArea txtColormaxResponses; 
 GLabel lblColormaxResponses; 
 GTextField txtUDID; 
 GButton btnGetUDID; 
 GLabel lblUDID; 
 GTextField txtRedGreenBlue; 
+GLabel lblCopyableRGB; 
+GTextArea txtColormaxResponses; 

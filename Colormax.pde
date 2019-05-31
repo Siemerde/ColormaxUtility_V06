@@ -129,7 +129,7 @@ class Colormax
     delay(commandDelay);
     readVersion();
     delay(commandDelay);    
-    readIlluminationAdjustment();
+    readIlluminationFactor();
     delay(commandDelay);
     readCLT();
     
@@ -610,7 +610,7 @@ class Colormax
     serial.write(13);
   }
   
-  void readIlluminationAdjustment() {
+  void readIlluminationFactor() {
     serial.write("!a");
     serial.write(13);
   }
@@ -677,17 +677,17 @@ class Colormax
        }
   }
   
-  void updateInfo(){
-    readCLT();
-    delay(commandDelay);
-    readSettings();
-    delay(commandDelay);
-    readIdentity();
-    delay(commandDelay);
-    readVersion();
-    delay(commandDelay);
-    readIlluminationAdjustment();
-  }
+  //void updateInfo(){
+  //  readCLT();
+  //  delay(commandDelay);
+  //  readSettings();
+  //  delay(commandDelay);
+  //  readIdentity();
+  //  delay(commandDelay);
+  //  readVersion();
+  //  delay(commandDelay);
+  //  readIlluminationFactor();
+  //}
   
   //void stopLongTest() {
   //  timer.cancel();
@@ -859,7 +859,7 @@ class Colormax
     // Check that our light adjustment is good
     if( currentLightAdjustment < 0x1F4
      || currentLightAdjustment > 0x3E8) {
-       readIlluminationAdjustment();
+       readIlluminationFactor();
        lightAdjustmentCalibrateStart();
      }
     
