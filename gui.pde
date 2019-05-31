@@ -235,6 +235,10 @@ public void btnGetUDID_click1(GButton source, GEvent event) { //_CODE_:btnGetUDI
   getUDID(colormaxes[listColormaxSelect.getSelectedIndex()]);
 } //_CODE_:btnGetUDID:301723:
 
+public void txtRedGreenBlue_change1(GTextField source, GEvent event) { //_CODE_:txtRedGreenBlue:961884:
+  //println("txtRedGreenBlue - GTextField >> GEvent." + event + " @ " + millis());
+} //_CODE_:txtRedGreenBlue:961884:
+
 
 
 // Create all the GUI controls. 
@@ -614,7 +618,7 @@ public void createGUI(){
   btnGetTempTable.setText("Get Temp Table");
   btnGetTempTable.setTextBold();
   btnGetTempTable.addEventHandler(this, "btnGetTempTable_click1");
-  txtColormaxResponses = new GTextArea(this, 790, 50, 220, 510, G4P.SCROLLBARS_VERTICAL_ONLY | G4P.SCROLLBARS_AUTOHIDE);
+  txtColormaxResponses = new GTextArea(this, 790, 50, 220, 20, G4P.SCROLLBARS_VERTICAL_ONLY | G4P.SCROLLBARS_AUTOHIDE);
   txtColormaxResponses.setOpaque(true);
   txtColormaxResponses.addEventHandler(this, "txtColormaxResponses_change1");
   lblColormaxResponses = new GLabel(this, 790, 30, 220, 20);
@@ -634,6 +638,9 @@ public void createGUI(){
   lblUDID.setText("UDID:");
   lblUDID.setTextBold();
   lblUDID.setOpaque(false);
+  txtRedGreenBlue = new GTextField(this, 10, 140, 240, 20, G4P.SCROLLBARS_NONE);
+  txtRedGreenBlue.setOpaque(true);
+  txtRedGreenBlue.addEventHandler(this, "txtRedGreenBlue_change1");
 }
 
 // Variable declarations 
@@ -727,3 +734,4 @@ GLabel lblColormaxResponses;
 GTextField txtUDID; 
 GButton btnGetUDID; 
 GLabel lblUDID; 
+GTextField txtRedGreenBlue; 

@@ -208,18 +208,17 @@ void populateColormaxes() {
 
 // Update Colormax Info **************************************************
 void updateColormaxInfo(Colormax inColormax) {
-  if (inColormax.getSerial() != null) {
+  if(inColormax != null && inColormax.getSerial() != null) {
     inColormax.updateInfo();
-    //delay(100);
-
-    // Legacy code for updating color percentages with precision to hundreths
-    //lblRedPercentData.setText(String.format("%.2f", inColormax.getRedPercent() - 0.005) + "%");
-    //lblGreenPercentData.setText(String.format("%.2f", inColormax.getGreenPercent() - 0.005) + "%");
-    //lblBluePercentData.setText(String.format("%.2f", inColormax.getBluePercent() - 0.005) + "%");
 
     lblRedPercentData.setText(String.format("%.1f", inColormax.getRedPercent() - 0.05) + "%");
     lblGreenPercentData.setText(String.format("%.1f", inColormax.getGreenPercent() - 0.05) + "%");
     lblBluePercentData.setText(String.format("%.1f", inColormax.getBluePercent() - 0.05) + "%");
+    
+    //txtRedGreenBlue.setText(String.format("%.1f", inColormax.getRedPercent() - 0.05));
+    //txtRedGreenBlue.appendText("\t" + String.format("%.1f", inColormax.getGreenPercent() - 0.05));
+    //txtRedGreenBlue.appendText("\t" + String.format("%.1f", inColormax.getBluePercent() - 0.05));
+    
     lblRedHexData.setText(String.valueOf(inColormax.getRed()) + "H");
     lblGreenHexData.setText(String.valueOf(inColormax.getGreen()) + "H");
     lblBlueHexData.setText(String.valueOf(inColormax.getBlue()) + "H");
@@ -242,9 +241,6 @@ void updateColormaxInfo(Colormax inColormax) {
 
 // Align Colors **************************************************
 void alignColor(final Colormax inColormax) {
-  //final int wait = 5000;  // Timer delay in milliseconds
-  //Timer alignTimer = new Timer();
-
   // Check if the colormax is already busy or not
   if (inColormax.getStatus() != inColormax.idle) {
     println("@@@@@@@@@@ CANNOT CALIBRATE COLOR, COLORMAX IS BUSY @@@@@@@@@@");
@@ -255,74 +251,6 @@ void alignColor(final Colormax inColormax) {
   oneSecondTimer.start();                                      // Start the timer!
   btnCalibrateColor.setLocalColorScheme(GCScheme.YELLOW_SCHEME); // Change the button to yellow
   inColormax.setStatus(inColormax.calibrating);                  // Change colormax's status
-
-  //// Create a TimerTask; this will run after the timer expires
-  // TimerTask alignColorTT = new TimerTask(){
-  //  public void run() {
-  //    inColormax.writeTempOn();       // Verify Colormax is using TempTable
-  //    delay(100);                     // 100ms delay to make sure colormax gets the command
-  //    inColormax.writeStartAlign();   // Verify Colormax is in AlmProcs
-  //    delay(100);                     // 100ms delay to make sure colormax gets the command
-  //    inColormax.writeAlignColor();   // Tell colormax to take readings
-  //    inColormax.setStatus(inColormax.idle);  // Reset Colormax status
-  //    btnCalibrateColor.setLocalColorScheme(GCScheme.CYAN_SCHEME); // Set button back to the default color scheme
-
-  //    // Check if user wants to hear a beep
-  //    if(chkBeepOnRead.isSelected()){
-  //          Toolkit.getDefaultToolkit().beep();
-  //    }
-
-  //    // Move the radio selection for the user
-  //    for (int i = 0; i < colorOptions.length; i++) {
-  //      if (colorOptions[i].isSelected()) {
-  //        try {
-  //          colorOptions[++i].setSelected(true);
-  //        }
-  //        catch(ArrayIndexOutOfBoundsException e) {
-  //          colorOptions[0].setSelected(true);
-  //        }
-  //        break;
-  //      }
-  //    }
-  //  }
-  //};
-
-  //timer.schedule(alignColorTT, (long)(wait));  // Set the timer
-
-  // Legacy code, from before we had discrete timertasks
-  //// This will run after the timer expires
-  //alignTimer.schedule(new TimerTask() {
-  //  public void run() {
-  //    // Verify Colormax is in AlmProcs
-  //    // 100ms delay to make sure colormax get sthe command
-  //    // Tell colormax to take readings
-  //    inColormax.writeStartAlign();
-  //    delay(100);
-  //    inColormax.writeAlignColor();
-  //    inColormax.setStatus(inColormax.idle);
-
-  //    // Move the radio selection for the user
-  //    for (int i = 0; i < colorOptions.length; i++) {
-  //      if (colorOptions[i].isSelected()) {
-  //        try {
-  //          colorOptions[++i].setSelected(true);
-  //        }
-  //        catch(ArrayIndexOutOfBoundsException e) {
-  //          colorOptions[0].setSelected(true);
-  //        }
-  //        btnCalibrateColor.setLocalColorScheme(GCScheme.CYAN_SCHEME);
-
-  //        if(chkBeepOnRead.isSelected()){
-  //          Toolkit.getDefaultToolkit().beep();
-  //        }
-
-  //        break;
-  //      }
-  //    }
-  //  }
-  //}
-  //// Set when the timer will go off
-  //, (long)(wait) );
   return;
 }
 
@@ -340,24 +268,6 @@ void retakeRead(final Colormax inColormax, final int colorIndex) {
   oneSecondTimer.start();                                      // Start the timer!
   btnRetakePoint.setLocalColorScheme(GCScheme.YELLOW_SCHEME);  // Change the button to yellow
   inColormax.setStatus(inColormax.retakingPoint);              // Change colormax's status
-
-  //// Create a TimerTask; this will run after the timer expires
-  //TimerTask retakeReadTT = new TimerTask() {
-  //  public void run() {
-  //    inColormax.writeTempOn();                // Verify temp table is on, cuz we need that
-  //    delay(100);                              // 100ms delay to make sure colormax gets the command
-  //    inColormax.writeRetakeRead(colorIndex);  // Tell the colormax to retake the reading
-  //    inColormax.setStatus(inColormax.idle);   // Reset Colormax status
-  //    btnRetakePoint.setLocalColorScheme(GCScheme.CYAN_SCHEME); // Set button back to the default color scheme
-
-  //    // Check if the user wants to hear a beep
-  //    if(chkBeepOnRead.isSelected()){
-  //      Toolkit.getDefaultToolkit().beep();
-  //    }
-  //  }
-  //};
-
-  //timer.schedule(retakeReadTT, (long)(wait) );
   return;
 }
 
@@ -378,7 +288,7 @@ ActionListener oneSecondTimerListener = new ActionListener() {
     final int max = 60;
     int colorIndex = 0;
     counter++;
-    println("counter: ", counter);  //for debugging
+    //println("counter: ", counter);  //for debugging
 
     // quick fix to make this code work from where it used to be
     Colormax inColormax = colormaxes[listColormaxSelect.getSelectedIndex()];
@@ -399,7 +309,7 @@ ActionListener oneSecondTimerListener = new ActionListener() {
       println("it is time");  //for debugging
 
       // Calibrating color
-      if (inColormax.getStatus() == inColormax.calibrating) {
+      if(inColormax.getStatus() == inColormax.calibrating) {
         inColormax.writeTempOn();       // Verify Colormax is using TempTable
         delay(100);                     // 100ms delay to make sure colormax gets the command
         inColormax.writeStartAlign();   // Verify Colormax is in AlmProcs
