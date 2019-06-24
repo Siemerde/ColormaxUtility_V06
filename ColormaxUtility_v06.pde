@@ -475,6 +475,9 @@ void getTempTable(Colormax inColormax) {
   }
 }
 
+// Get UDID **************************************************
+
+// TO DO: ADD CHECK FOR VERSION OVER 011 047
 boolean getUDID(Colormax inColormax){
   // To get the UDID, we need to send the !D command
   // To use the !D command, we need to use the !Z command first
@@ -519,12 +522,101 @@ boolean getUDID(Colormax inColormax){
   return true;// All done
 }
 
+// Delete Serial Number
+boolean deleteSerialNumber(Colormax inColormax){
+  // To get the UDID, we need to send the !D command
+  // To use the !D command, we need to use the !Z command first
+  // To use the !Z command, we need the serial number reversed in pairs of two hex digits
+  // e.g. inSN == "0123 4567 89AB CDEF", outSN == "EFCD AB89 6745 2301"
+  
+  final int commandDelay = 50;        // Delay in milliseconds required between serial commands (range: 25-infinity)
+  final int responseTimeout = 250;    // Delay for colormax response timeout (range: 25 - infinity)
+  String tempSerialNumber = inColormax.getSerialNumber();  // we may not need this
+  inColormax.setSerialNumber(null);                        //serialNumber = null so we can check for if we've got an update or not
+  inColormax.readIdentity();          // Ask for colormax's serial number - this is to make sure we have the right serial number as it's not updated if a new colormax is connected and its info not grabbed
+  
+  int startMillis = millis();         // Starting point for response timeout
+  while(inColormax.getSerialNumber() == null){
+    delay(1);                                             // Required, otherwise this function goes too fast
+    if((millis() - startMillis) > responseTimeout){       // Check if we've timed out
+      inColormax.setSerialNumber(tempSerialNumber);       // If not, set this back, I guess?
+      println("@@@@@@@@@@", inColormax.serial.port.getPortName(),", getUDID serial number response timeout @@@@@@@@@@");  // Print out an error
+      return false;                                             // Leave this function!
+    }
+  }
+  
+  // Now that we know for sure we have the right serial number
+  char[] sn = inColormax.getSerialNumber().toCharArray();  // Make it an array; easier to maniuplate indiviudal characters like this
+  char[] sn2 = new char[16];                               // Make a second array to store the deletion code (this will be used to make a string later)
+  
+  int i;                            // For iterating through sn
+  int j = 0;                        // For iterating through sn2
+  for(i = (sn.length - 1) ; i > 0 ; i -= 2){     // Start from the end of sn[], make sure we stay above 0, decrement by 2
+    sn2[j++] = sn[i-1];             // Increment through sn2[], go half-backwards through sn[] (it's weird, i know)
+    sn2[j++] = sn[i];
+  }
+  
+  // We can finally send the !Z and !D commands
+  String serialNumberDeletionCode = new String(sn2);              // The !Z command actually deletes the unit's serial number; we need it as a string for our function
+  inColormax.writeDeleteSerialNumber(serialNumberDeletionCode);   // Tell the unit to delete its serial number; no worries, we have its serial number stored in the object for later
+  return true;
+}
+
+// Calculate UDIDcd **************************************************
+String calcUDIDcd(Colormax inColormax){
+  // The UDIDcd is a strange beast..
+  // We need to M xor N where:
+  // M = hex values 18, 24, 4, 30, 23, and 12 from the UDID
+  // N = The last 7 digits of the unit's serial number in reverse order, converted to a hex value
+  
+  
+  // TO DO: ADD CHECK FOR COLORMAX ALREADY HAVING UDID STORED
+  if(inColormax.getUDID() != null || !getUDID(inColormax)){  // Make sure we have the unit's UDID
+    return "error";  // We couldn't get the UDID, leave now
+  }
+  else {     // We got it! Moving on...
+    // Let's get M first
+    char[] inUDID = inColormax.getUDID().toCharArray();        // Convert the UDID to an array of characters, because it's easier to deal with
+    char[] tempM = { inUDID[17], inUDID[23], inUDID[3], inUDID[29], inUDID[22], inUDID[11]  };  // M = hex values 18, 24, 4, 30, 23, and 12 from the UDID
+    String M = new String(tempM);                              // Turn that badboi into a string
+    //println("M:", M);  // for debugging
+    
+    // Now lets get N
+    char[] inSN = inColormax.getSerialNumber().toCharArray();  // Convert the serial number to an array
+    char[] tempN = new char[7];                                // Second array to temporarily hold N
+    
+    // We need the last 7 digits of inSN in reverse order
+    int i = 0;                              // Just need one iterating variable
+    for(i = 0 ; i < tempN.length ; i++){    // Start from the beginning, make sure we don't exceed our array length, increment once
+      tempN[i] = inSN[inSN.length - (i + 1)];     // Go in reverse, bb
+    }
+    String N = new String(tempN);           // Chuck that into a string
+    N = String.format("%X", Integer.parseInt(N));    // Do some fancy footwork to make that string a hex value
+    //println("N:", N);  // for debugging
+    
+    // Now we just xor those bois together
+    String UDIDcd = String.format("%X", ((Integer.parseInt(M, 16)) ^ (Integer.parseInt(N, 16))));
+    inColormax.setUDIDcd(UDIDcd);
+    //println("UDIDcd:", UDIDcd);  //for debugging
+    return UDIDcd;
+  }
+}
+
+// Transfer Memory
+void transferMemory(Colormax inColormax){
+  
+}
+
+// Send Serial Number **************************************************
+
+// TO DO add to end of function, clear out text
 void sendSerialNumber(Colormax inColormax){
   if(txtSerialNumberInput.getText().length() != 16){
     println("@@@@@@@@@@ sendSerialNumber() incorrect length serial number @@@@@@@@@@");
   } else {
     inColormax.writeSerialNumber(txtSerialNumberInput.getText());
   }
+  updateColormaxInfo(inColormax);
 }
 
 // Key Pressed Event Listener **************************************************

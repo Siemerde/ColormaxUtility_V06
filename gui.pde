@@ -119,7 +119,8 @@ public void btnSendSerialNumber_click1(GButton source, GEvent event) { //_CODE_:
 } //_CODE_:btnSendSerialNumber:630693:
 
 public void btnClearSerialNumber_click1(GButton source, GEvent event) { //_CODE_:btnClearSerialNumber:920555:
-  println("btnClearSerialNumber - GButton >> GEvent." + event + " @ " + millis());
+  //println("btnClearSerialNumber - GButton >> GEvent." + event + " @ " + millis());
+  deleteSerialNumber(colormaxes[listColormaxSelect.getSelectedIndex()]);
 } //_CODE_:btnClearSerialNumber:920555:
 
 public void btnSendSettings_click1(GButton source, GEvent event) { //_CODE_:btnSendSettings:286678:
@@ -507,7 +508,7 @@ public void createGUI(){
   btnCalibrateColor.setText("Read Color");
   btnCalibrateColor.setTextBold();
   btnCalibrateColor.addEventHandler(this, "btnCalibrateColor_click1");
-  btnCalibrateLight = new GButton(this, 460, 370, 100, 20);
+  btnCalibrateLight = new GButton(this, 570, 440, 100, 20);
   btnCalibrateLight.setText("Adjust Light");
   btnCalibrateLight.setTextBold();
   btnCalibrateLight.setLocalColorScheme(GCScheme.RED_SCHEME);
@@ -533,7 +534,7 @@ public void createGUI(){
   btnStoreAlign.setText("Store Align");
   btnStoreAlign.setTextBold();
   btnStoreAlign.addEventHandler(this, "btnStoreAlign_click1");
-  btnDiscardAlign = new GButton(this, 570, 370, 100, 20);
+  btnDiscardAlign = new GButton(this, 460, 440, 100, 20);
   btnDiscardAlign.setText("Discard Align");
   btnDiscardAlign.setTextBold();
   btnDiscardAlign.setLocalColorScheme(GCScheme.RED_SCHEME);
@@ -546,11 +547,11 @@ public void createGUI(){
   btnAlignOff.setText("Align Off");
   btnAlignOff.setTextBold();
   btnAlignOff.addEventHandler(this, "btnAlignOff_click1");
-  btnTempOn = new GButton(this, 460, 420, 100, 20);
+  btnTempOn = new GButton(this, 460, 320, 100, 20);
   btnTempOn.setText("Temp On");
   btnTempOn.setTextBold();
   btnTempOn.addEventHandler(this, "btnTempOn_click1");
-  btnTempOff = new GButton(this, 570, 420, 100, 20);
+  btnTempOff = new GButton(this, 570, 320, 100, 20);
   btnTempOff.setText("Temp Off");
   btnTempOff.setTextBold();
   btnTempOff.addEventHandler(this, "btnTempOff_click1");
@@ -589,8 +590,8 @@ public void createGUI(){
   chkSpacebarShortcut.setTextBold();
   chkSpacebarShortcut.setOpaque(false);
   chkSpacebarShortcut.addEventHandler(this, "chkSpacebarShortcut_clicked1");
-  btnCalcCoefficient = new GButton(this, 570, 320, 100, 20);
-  btnCalcCoefficient.setText("Calculate Coeff");
+  btnCalcCoefficient = new GButton(this, 460, 350, 210, 20);
+  btnCalcCoefficient.setText("Calculate Coefficient");
   btnCalcCoefficient.setTextBold();
   btnCalcCoefficient.addEventHandler(this, "btnCalcCoefficient_click1");
   btnSendTargets = new GButton(this, 570, 260, 100, 20);
@@ -612,11 +613,11 @@ public void createGUI(){
   btnCancel.setTextBold();
   btnCancel.setLocalColorScheme(GCScheme.YELLOW_SCHEME);
   btnCancel.addEventHandler(this, "btnCancel_click1");
-  btnGetAlignTable = new GButton(this, 460, 320, 100, 20);
+  btnGetAlignTable = new GButton(this, 570, 380, 100, 20);
   btnGetAlignTable.setText("Get Align Table");
   btnGetAlignTable.setTextBold();
   btnGetAlignTable.addEventHandler(this, "btnGetAlignTable_click1");
-  btnGetTempTable = new GButton(this, 460, 450, 100, 20);
+  btnGetTempTable = new GButton(this, 460, 380, 100, 20);
   btnGetTempTable.setText("Get Temp Table");
   btnGetTempTable.setTextBold();
   btnGetTempTable.addEventHandler(this, "btnGetTempTable_click1");

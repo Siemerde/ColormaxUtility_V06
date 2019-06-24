@@ -1267,5 +1267,26 @@ class Colormax
     short tempTemp = (short) Integer.parseInt(inTemperature.substring(3,7), 16);  // Convert raw input into a 16-bit signed integer
     temperature = (float) tempTemp / 16;                                          // Convert to floating point ºC
   }
+  
+  void transferMemory(String inUDIDcd){
+    serial.write("!r,");
+    serial.write(inUDIDcd);
+    serial.write(13);
+  }
+  
+  void transferMemoryBack(String inUDIDcd){
+    serial.write("!R,");
+    serial.write(inUDIDcd);
+    serial.write(13);
+  } 
+  
+  
+  
+  
+  
+  
+  
+  
+  
 // @@@@@ End of Object @@@@@  
 }
