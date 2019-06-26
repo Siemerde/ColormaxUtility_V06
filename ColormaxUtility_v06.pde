@@ -262,6 +262,7 @@ void alignColor(final Colormax inColormax) {
 
   oneSecondTimer.start();                                      // Start the timer!
   btnCalibrateColor.setLocalColorScheme(GCScheme.YELLOW_SCHEME); // Change the button to yellow
+  btnCalibrateColor.setText("60");
   inColormax.setStatus(inColormax.calibrating);                  // Change colormax's status
   return;
 }
@@ -300,6 +301,7 @@ ActionListener oneSecondTimerListener = new ActionListener() {
     final int max = 60;
     int colorIndex = 0;
     counter++;
+    btnCalibrateColor.setText(Integer.toString(60 - counter));
     //println("counter: ", counter);  //for debugging
 
     // quick fix to make this code work from where it used to be
@@ -315,10 +317,11 @@ ActionListener oneSecondTimerListener = new ActionListener() {
     // Check for negative values real fast
     if (counter < 0) {
       println("@@@@@ timer counter error; non-positive value @@@@@");
+      // TO DO: ADD ERROR HANDLER, YOU DOOFUS
     } else if (counter >= max) {
       counter = 0;            // Reset counter
       oneSecondTimer.stop();  // End timer
-      println("it is time");  //for debugging
+      //println("it is time");  //for debugging
 
       // Calibrating color
       if(inColormax.getStatus() == inColormax.calibrating) {
@@ -329,6 +332,8 @@ ActionListener oneSecondTimerListener = new ActionListener() {
         inColormax.writeAlignColor();   // Tell colormax to take readings
         inColormax.setStatus(inColormax.idle);  // Reset Colormax status
         btnCalibrateColor.setLocalColorScheme(GCScheme.CYAN_SCHEME); // Set button back to the default color scheme
+        btnCalibrateColor.setText("Read Color");
+        btnCalibrateColor.setTextBold();
 
         // Check if user wants to hear a beep
         if (chkBeepOnRead.isSelected()) {
